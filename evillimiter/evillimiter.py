@@ -4,7 +4,6 @@ import os.path
 import argparse
 import platform
 import collections
-import pkg_resources
 
 import evillimiter.networking.utils as netutils
 from evillimiter.menus.main_menu import MainMenu
@@ -21,18 +20,18 @@ def get_init_content():
 
 
 def get_version():
-    version_match = re.search(r'^__version__ = [\'"](\d\.\d\.\d)[\'"]', get_init_content(), re.M)
+    version_match = re.search(r'^__version__ = [\'\"](\d\.\d\.\d)[\'\"]', get_init_content(), re.M)
     if version_match:
         return version_match.group(1)
-    
+
     raise RuntimeError('Unable to locate version string.')
 
 
 def get_description():
-    desc_match = re.search(r'^__description__ = [\'"]((.)*)[\'"]', get_init_content(), re.M)
+    desc_match = re.search(r'^__description__ = [\'\"]((.)*)[\'\"]', get_init_content(), re.M)
     if desc_match:
         return desc_match.group(1)
-    
+
     raise RuntimeError('Unable to locate description string.')
 
 
@@ -168,9 +167,9 @@ def run():
 
     if args is None:
         return
-    
+
     if initialize(args.interface):
-        IO.spacer()        
+        IO.spacer()
         menu = MainMenu(version, args.interface, args.gateway_ip, args.gateway_mac, args.netmask)
         menu.start()
         cleanup(args.interface)
