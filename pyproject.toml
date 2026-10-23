@@ -1,0 +1,62 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "evillimiter"
+dynamic = ["version"]
+description = "Monitors, analyzes and limits the bandwidth of devices on the local network"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+  { name = "bitbrute", email = "bitbrute@gmail.com" }
+]
+keywords = ["evillimiter", "limit", "bandwidth", "network"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: Console",
+  "Intended Audience :: End Users/Desktop",
+  "Intended Audience :: System Administrators",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Natural Language :: English",
+  "Operating System :: Unix",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3 :: Only",
+  "Topic :: System :: Networking",
+]
+dependencies = [
+  "colorama>=0.4.6",
+  "netaddr>=1.2.1",
+  "netifaces>=0.11.0",
+  "tqdm>=4.66.0",
+  "scapy>=2.5.0",
+  "terminaltables>=3.1.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/bitbrute/evillimiter"
+Repository = "https://github.com/bitbrute/evillimiter"
+
+[project.scripts]
+evillimiter = "evillimiter.evillimiter:run"
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0",
+  "ruff>=0.4.0",
+  "build>=1.2.0",
+]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+include = ["evillimiter*"]
+
+[tool.setuptools.dynamic]
+version = {attr = "evillimiter.__version__"}
