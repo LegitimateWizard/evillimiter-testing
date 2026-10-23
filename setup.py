@@ -23,14 +23,14 @@ def get_init_content():
 
 
 def get_version():
-    version_match = re.search(r'^__version__ = [\'"](\d\.\d\.\d)[\'"]', get_init_content(), re.M)
+    version_match = re.search(r'^__version__ = [\'\"](\d\.\d\.\d)[\'\"]', get_init_content(), re.M)
     if version_match:
         return version_match.group(1)
     
     raise RuntimeError('Unable to locate version string.')
 
 def get_description():
-    desc_match = re.search(r'^__description__ = [\'"]((.)*)[\'"]', get_init_content(), re.M)
+    desc_match = re.search(r'^__description__ = [\'\"]((.)*)[\'\"]', get_init_content(), re.M)
     if desc_match:
         return desc_match.group(1)
     
@@ -69,7 +69,7 @@ INSTALL_REQUIRES = ['colorama',
                     'netifaces',
                     'tqdm',
                     'scapy',
-                    'terminaltables'
+                    'terminaltables3'
                     ]
 
 CMDCLASS = { 'clean': CleanCommand }

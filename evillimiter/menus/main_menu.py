@@ -4,7 +4,7 @@ import curses
 import netaddr
 import threading
 import collections
-from terminaltables import SingleTable
+from terminaltables3 import SingleTable
 
 import evillimiter.networking.utils as netutils
 from .menu import CommandMenu
@@ -62,7 +62,7 @@ class MainMenu(CommandMenu):
         watch_add_parser.add_parameter('id')
         watch_remove_parser = watch_parser.add_subparser('remove', self._watch_remove_handler)
         watch_remove_parser.add_parameter('id')
-        watch_set_parser = watch_parser.add_subparser('set', self._watch_set_handler)
+        watch_set_parser = self.parser.add_subparser('set', self._watch_set_handler)
         watch_set_parser.add_parameter('attribute')
         watch_set_parser.add_parameter('value')
 
@@ -714,3 +714,6 @@ class MainMenu(CommandMenu):
             self.limiter.unlimit(host, Direction.BOTH)
             self.bandwidth_monitor.remove(host)
             self.host_watcher.remove(host)
+            
+        
+
