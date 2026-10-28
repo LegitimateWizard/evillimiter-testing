@@ -1,6 +1,6 @@
 import re
 import netifaces
-from scapy.all import ARP, sr1 # pylint: disable=no-name-in-module
+from scapy.all import ARP, Ether, srp1 # pylint: disable=no-name-in-module
 
 import evillimiter.console.shell as shell
 from evillimiter.common.globals import BIN_TC, BIN_IPTABLES, BIN_SYSCTL, IP_FORWARD_LOC
@@ -38,12 +38,13 @@ def get_mac_by_ip(interface, address):
     Resolves hardware address from IP by sending ARP request
     and receiving ARP response
     """
-    # ARP packet with operation 1 (who-is)
-    packet = ARP(op=1, pdst=address)
-    response = sr1(packet, timeout=3, verbose=0, iface=interface)
+    # ARP requests are L2 packets; use srp1 so the iface argument is valid
+    # and the packet has an Ethernet header, which Scapy expects for iface=.
+    packet = Ether(dst='ff:ff:ff:ff:ff:ff') / ARP(op=1, pdst=address)
+    response = srp1(packet, timeout=3, verbose=0, iface=interface)
 
     if response is not None:
-        return response.hwsrc
+        return response[ARP].hwsrc
 
 
 def exists_interface(interface):
@@ -131,9 +132,9 @@ class BitRate(object):
                     unit = 'mbit'
                 elif counter == 3:
                     unit = 'gbit'
-                
+
                 return '{}{}'.format(int(r), unit)
-            
+
             if counter > 3:
                 raise Exception('Bitrate limit exceeded')
 
@@ -146,7 +147,7 @@ class BitRate(object):
         string = self.__str__()
         end = len([_ for _ in string if _.isdigit()])
         num = int(string[:end])
-    
+
         return '{}{}'.format(fmt % num, string[end:])
 
     @classmethod
@@ -206,9 +207,9 @@ class ByteValue(object):
                     unit = 'gb'
                 elif counter == 4:
                     unit = 'tb'
-                
+
                 return '{}{}'.format(int(v), unit)
-            
+
             if counter > 3:
                 raise Exception('Byte value limit exceeded')
 
